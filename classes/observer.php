@@ -47,6 +47,9 @@ class enrol_coursecompleted_observer {
                 if ($DB->record_exists('role', ['id' => $enrol->roleid])) {
                     // Invalid courses are already detected when context is calculated.
                     if ($DB->record_exists('course', ['id' => $enrol->courseid])) {
+                        if (empty($enrol->enrolstartdate)) {
+                            $enrol->enrolstartdate = $event->timecreated;
+                        }
                         if ($enrol->enrolperiod > 0) {
                             $enrol->enrolenddate = max(time(), $enrol->enrolstartdate) + $enrol->enrolperiod;
                         }
